@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  postgres_db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: default_database
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 3002:8080
+  
+  flask_server:
+    build: ./server
+    ports:
+      - 3001:5000
+    environment:
+      DATABASE_URL: postgres://admin:password@postgres_db:5432/default_database
+
+  angular_client:
+    build: ./client
+    ports:
+      - 3000:80
+    environment:
+      NG_APP_API_BASE_URL: flask_server:5000
+
+networks:
+  default: 
+    name: default_network

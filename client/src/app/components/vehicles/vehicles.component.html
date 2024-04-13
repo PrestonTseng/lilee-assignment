@@ -1,0 +1,71 @@
+<div class="mat-elevation-z8">
+  <mat-card>
+    <mat-card-header>
+      <button mat-raised-button color="primary" (click)="create()">
+        Add a vehicle
+      </button>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="dataSource">
+
+
+        <ng-container matColumnDef="name">
+          <th mat-header-cell *matHeaderCellDef> Name </th>
+          <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="speed">
+          <th mat-header-cell *matHeaderCellDef> Speed </th>
+          <td mat-cell *matCellDef="let element"> {{ element.speed ?? '--'}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+          <th mat-header-cell *matHeaderCellDef> </th>
+          <td mat-cell *matCellDef="let element">
+            <button mat-icon-button color="primary" class="d-inline" (click)="element.isMonitoring ? stopMonitorSpeed(element) : monitorSpeed(element)">
+              <mat-icon>{{ element.isMonitoring ? 'stop' : 'play_arrow' }}</mat-icon>
+            </button>
+            <button mat-icon-button (click)="update(element)">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button mat-icon-button color="warn" (click)="remove(element)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons aria-label="Select page of periodic elements">
+      </mat-paginator>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #removeComfirmDialog let-data>
+  <h1 mat-dialog-title>Confirmation</h1>
+  <div mat-dialog-content>
+    <p>Are you sure you want to delete {{ data.name }}?</p>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>No</button>
+    <button mat-button color="primary" [mat-dialog-close]="true">Yes</button>
+  </div>
+</ng-template>
+
+
+<ng-template #formDialog let-data>
+  <h1 mat-dialog-title>{{ data.id ? 'Update the' : 'Create a '}}Vehicle</h1>
+  <div mat-dialog-content>
+    <mat-form-field>
+      <mat-label>Vehicle Name</mat-label>
+      <input matInput type="text" [(ngModel)]="data.name">
+    </mat-form-field>
+  </div>
+  <div mat-dialog-actions align="end">
+    <button mat-button mat-dialog-close>Cancel</button>
+    <button mat-button color="primary" [mat-dialog-close]="data">Submit</button>
+  </div>
+</ng-template>
