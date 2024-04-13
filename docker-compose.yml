@@ -25,11 +25,13 @@ services:
       DATABASE_URL: postgres://admin:password@postgres_db:5432/default_database
 
   angular_client:
-    build: ./client
+    build: 
+      context: ./client
+      args:
+        API_BASE_URL: http://localhost:3001
     ports:
       - 3000:80
-    environment:
-      NG_APP_API_BASE_URL: flask_server:5000
+    
 
 networks:
   default: 
