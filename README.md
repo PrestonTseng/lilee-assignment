@@ -4,13 +4,21 @@
 
 ## Getting Started
 
-Step 1. Run Docker Compose
+### Prerequisites
+
+* Docker and Docker Compose have been installed.
+* Ports 3000 and 3001 are not occupied.
+
+### Steps
+
+1. Run Docker Compose
 
 ```
 $ docker compose up
 ```
 
-Step 2. Access the frontend page: [http://localhost:3000](http://localhost:3000)
+2. Access the frontend page: [http://localhost:3000](http://localhost:3000)
+
 
 ## Functionality
 
