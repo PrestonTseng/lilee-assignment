@@ -14,14 +14,14 @@
 1. Clone the project
 
    ```
-   $ git clone https://github.com/PrestonTseng/lilee-assignment.git
-   $ cd lilee-assignment
+   git clone https://github.com/PrestonTseng/lilee-assignment.git
+   cd lilee-assignment
    ```
 
 1. Run Docker Compose
 
    ```
-   $ docker compose up
+   docker compose up
    ```
 
 3. Access the frontend page: [http://localhost:3000](http://localhost:3000)
