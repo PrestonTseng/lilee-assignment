@@ -11,13 +11,20 @@
 
 ### Steps
 
+1. Clone the project
+
+   ```
+   $ git clone https://github.com/PrestonTseng/lilee-assignment.git
+   $ cd lilee-assignment
+   ```
+
 1. Run Docker Compose
 
-```
-$ docker compose up
-```
+   ```
+   $ docker compose up
+   ```
 
-2. Access the frontend page: [http://localhost:3000](http://localhost:3000)
+3. Access the frontend page: [http://localhost:3000](http://localhost:3000)
 
 
 ## Functionality
