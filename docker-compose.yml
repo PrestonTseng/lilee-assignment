@@ -6,23 +6,33 @@ services:
     restart: always
     volumes:
       - ./database:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_USER: admin
       POSTGRES_PASSWORD: password
       POSTGRES_DB: default_database
+    healthcheck:
+        test: ["CMD-SHELL", "pg_isready -d default_database -U admin"]
+        interval: 5s
+        timeout: 5s
+        retries: 5
 
   adminer:
     image: adminer
     restart: always
     depends_on:
-      - postgres_db
+      postgres_db:
+        condition: service_healthy
     ports:
       - 3002:8080
   
   flask_server:
     build: ./server
+    restart: always
     depends_on:
-      - postgres_db
+      postgres_db:
+        condition: service_healthy
     ports:
       - 3001:5000
     environment:
@@ -33,7 +43,7 @@ services:
       context: ./client
       args:
         API_BASE_URL: http://localhost:3001
-    
+    restart: always
     depends_on:
       - flask_server
     ports:
