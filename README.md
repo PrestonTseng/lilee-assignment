@@ -24,7 +24,7 @@
    docker compose up
    ```
 
-3. Access the frontend page: [http://localhost:3000](http://localhost:3000)
+3. After all containers have been started, access the frontend page: [http://localhost:3000](http://localhost:3000)
 
 
 ## Functionality
