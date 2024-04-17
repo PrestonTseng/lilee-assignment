@@ -8,6 +8,11 @@ export interface IVehicle {
   name: string
 }
 
+export interface ISpeedSimulation {
+  id: string,
+  speed: number
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -44,8 +49,8 @@ export class VehicleService {
   }
 
   getSpeed() {
-    let observable = new Observable<{ id: string, speed: number }>(observer => {
-      this.socket.on('speed', (data) => {
+    let observable = new Observable<{ id: string, speed: number }>((observer: any) => {
+      this.socket.on('speed', (data: ISpeedSimulation) => {
         observer.next(data);
       });
       return () => { this.socket.disconnect(); };  

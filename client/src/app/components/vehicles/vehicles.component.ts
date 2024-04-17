@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
-import { IVehicle, VehicleService } from '../../services/vehicle.service';
+import { ISpeedSimulation, IVehicle, VehicleService } from '../../services/vehicle.service';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ interface IVehicleObject extends IVehicle {
 })
 
 export class VehiclesComponent {
-  displayedColumns: string[] = ['name', 'speed', 'action'];
+  displayedColumns: string[] = ['id', 'name', 'speed', 'action'];
   dataSource = new MatTableDataSource<IVehicleObject>([]);
   editingVehicle: IVehicle | null = null
 
@@ -43,14 +43,13 @@ export class VehiclesComponent {
 
   fetchData() {
     this.vehicleService.getAll().subscribe(
-      data => this.dataSource.data = data.map(e => Object.assign({}, e, { speed: null, isMonitoring: false }))
+      (data: IVehicle[]) => this.dataSource.data = data.map(e => Object.assign({}, e, { speed: null, isMonitoring: false }))
     )
   }
 
   initSocket() {
-    this.vehicleService.getSpeed().subscribe((result) => {
-      const target = this.dataSource.data.find(e => e.id === result.id)
-      console.log(target)
+    this.vehicleService.getSpeed().subscribe((result: ISpeedSimulation) => {
+      const target = this.dataSource.data.find((e: IVehicleObject) => e.id === result.id)
       if (target) {
         Object.assign(target, { speed: result.speed, isMonitoring: true })
         this.dataSource._updateChangeSubscription()
@@ -63,9 +62,9 @@ export class VehiclesComponent {
       data: { id: '', name: '' },
     })
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: IVehicle) => {
       this.vehicleService.add(result).subscribe(
-        _ => {
+        (_: any) => {
           this.fetchData()
         }
       )
@@ -77,9 +76,9 @@ export class VehiclesComponent {
       data: JSON.parse(JSON.stringify(req)),
     })
 
-    dialogRef.afterClosed().subscribe(result => {
+    dialogRef.afterClosed().subscribe((result: IVehicle) => {
       this.vehicleService.update(result).subscribe(
-        data => {
+        (data: IVehicle) => {
           const index = this.dataSource.data.findIndex(e => e.id === data.id)
           this.dataSource.data.splice(index, 1, Object.assign({}, req, data))
           this.dataSource._updateChangeSubscription()
@@ -93,10 +92,10 @@ export class VehiclesComponent {
       data: req,
     })
 
-    dialogRef.afterClosed().subscribe(confirm => {
+    dialogRef.afterClosed().subscribe((confirm: boolean) => {
       if (confirm) {
         this.vehicleService.remove(req.id).subscribe(
-          _ => {
+          (_: any) => {
             const index = this.dataSource.data.findIndex(e => e.id === req.id)
             this.dataSource.data.splice(index, 1)
             this.dataSource._updateChangeSubscription()
