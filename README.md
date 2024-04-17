@@ -1,6 +1,6 @@
 # Lilee T-Cloud Fullstack Engineer Assignment
 
-| Author: Preston Tseng
+  Author: Preston Tseng
 
 ## Getting Started
 
