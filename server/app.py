@@ -13,21 +13,29 @@ from flask_sqlalchemy import SQLAlchemy
 from controller import blue_vehicle
 from model import db
 
-url = os.environ.get("DATABASE_URL")
+# Environment
+URL = os.environ.get("DATABASE_URL")
+
+# Initialization
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = url
+app.config['SQLALCHEMY_DATABASE_URI'] = URL
 
+# Controller
 app.register_blueprint(blue_vehicle, url_prefix='/api/vehicles')
 
+# Database
 db.init_app(app)
-
 with app.app_context():
     db.create_all()
 
+# WebSocket
 socketio = SocketIO(app, cors_allowed_origins="*")
+
+# I usually control the cors in Azure App Service or K8s.
 CORS(app)
 
+# The code below is for Real-Time Vehicle Speed Simulation
 thread = Thread()
 thread_stop_event = Event()
 simulation_vehicle_id = []
